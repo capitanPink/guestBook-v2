@@ -43,11 +43,8 @@ const config: webpack.Configuration = {
       loader: 'file-loader?name=assets/[name].[hash].[ext]'
     },
     {
-      test: /\.scss$/,
-      loaders: [
-        'to-string-loader',
-        "css-loader"
-      ]
+      test: /\.scss$/,      
+      loaders: ['style-loader', 'css-loader', 'sass-loader']
     }
   ]
 },
@@ -66,10 +63,10 @@ plugins: [
     filename: 'index.html'
   })
 ],
-// stats: {
-//   warnings: true,
-//   warningsFilter: /System.import()/
-//   }
+node: {
+  fs: 'empty',
+  net: 'empty'
+}
 };
 
 export default config;
