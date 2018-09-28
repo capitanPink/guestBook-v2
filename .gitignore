@@ -1,0 +1,13 @@
+# System
+.DS_Store
+
+# Dependency
+/node_modules
+
+# Build
+/dist
+
+# JS files
+*.js
+
+package-lock.json
