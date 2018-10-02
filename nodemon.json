@@ -8,7 +8,7 @@
     ".git",
     "node_modules"
   ],
-  "exec": "ts-node ./rest/api/v2/app.ts",
+  "exec": "ts-node ./index.ts",
   "ext": "ts",
   "watch": ["rest"]
 }
