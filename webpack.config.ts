@@ -6,7 +6,6 @@ const config: webpack.Configuration = {
   mode: 'development',
   entry: {
     vendor: './src/vendor.ts',
-    app: './rest/api/v2/app.ts',
     main: './src/main.ts'
   },
   output: {
