@@ -1,8 +1,9 @@
 # System
 .DS_Store
 
-# Dependency
-/node_modules
+# Dependency directory
+node_modules/
+bower_components/
 
 # Build
 /dist
@@ -10,4 +11,12 @@
 # JS files
 *.js
 
-package-lock.json
+# lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
