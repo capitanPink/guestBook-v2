@@ -4,7 +4,7 @@
   "description": "Simple guest book API",
   "main": "index.js",
   "scripts": {
-    "start-front": "webpack-dev-server --content-base ./dist --hot --inline --colors --port 3000",
+    "start-front": "webpack-dev-server --content-base ./dist --hot --inline --colors --port 3001",
     "start-server": "nodemon"
   },
   "keywords": [

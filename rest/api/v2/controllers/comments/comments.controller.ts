@@ -1,8 +1,9 @@
-import { UserRepository } from './../../models/user/user.repository';
-import { User } from './../../models/user/user.model';
-import { Request, RestBindings, get, ResponseObject, post } from '@loopback/rest';
+import { IPostObject } from './../../../../../shared/interfaces/i-post-object';
+import { Request, RestBindings, get, ResponseObject, post, param, requestBody } from '@loopback/rest';
 import { inject } from '@loopback/context';
 import { repository } from '@loopback/repository';
+import { UserRepository } from './../../models/user/user.repository';
+import { User } from './../../models/user/user.model';
 
 /**
  * OpenAPI response for ping()
@@ -63,9 +64,13 @@ export class CommentsController {
       '200': PING_RESPONSE,
     },
   })
-  async postComment(postObject: IPostObject): Promise<Object> {
-    const {firstName, lastName, email} = postObject;
-    const userData = {firstName, lastName, email};
-    this.userRepository.createInstance(userData);
+  async postComment(@requestBody() postObject: IPostObject): Promise<Object> {
+    console.log('this is arguments', postObject);
+    // const {firstName, lastName, email} = postObject;
+    // const userData = {firstName, lastName, email};
+    // const isUserCreated = await this.userRepository.findOne({where: {email: email}});
+    // await this.userRepository.createInstance(userData);
+    // await this.
+    return {};
   }
 }

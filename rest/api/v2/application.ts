@@ -1,3 +1,4 @@
+import { IPostObject } from './../../../shared/interfaces/i-post-object';
 import { BootMixin } from '@loopback/boot';
 import { ApplicationConfig } from '@loopback/core';
 import { RepositoryMixin } from '@loopback/repository';
@@ -10,12 +11,11 @@ import { CommentsController } from './controllers/comments/comments.controller';
 export class GuestBookApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
-  constructor(options: ApplicationConfig = {rest: {
-    port: 8080
-  }}) {
+  constructor(options: ApplicationConfig = {}) {
     super(options);
-    this.controller(CommentsController);
+    // this.controller(CommentsController);
     this.repository(UserRepository);
+    // this.bind('comments.postObject').to(IPostObject);
     // Set up the custom sequence
     this.sequence(MySequence);
 
@@ -24,8 +24,8 @@ export class GuestBookApplication extends BootMixin(
     this.bootOptions = {
       controllers: {
         // Customize ControllerBooter Conventions here
-        dirs: ['controllers/**'],
-        extensions: ['.ts'],
+        dirs: ['controllers'],
+        extensions: ['.controller.ts'],
         nested: true,
       },
     };
