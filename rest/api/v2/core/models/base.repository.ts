@@ -1,12 +1,11 @@
-import { Model } from 'sequelize-typescript';
 import { Filter } from 'loopback-datasource-juggler';
 
 export class BaseRepository {
 
   constructor(protected model: any) {}
 
-  async all() {
-    return await this.model.all();
+  all() {
+    return this.model.all();
   }
 
   findOne(filter: Filter) {
@@ -23,5 +22,9 @@ export class BaseRepository {
 
   destroy(filter: Filter) {
     return this.model.destroy(filter);
+  }
+
+  createInstance(instanceData: any) {
+    return new this.model(instanceData).save();
   }
 }

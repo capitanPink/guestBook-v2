@@ -1,6 +1,6 @@
 import { UserRepository } from './../../models/user/user.repository';
 import { User } from './../../models/user/user.model';
-import { Request, RestBindings, get, ResponseObject } from '@loopback/rest';
+import { Request, RestBindings, get, ResponseObject, post } from '@loopback/rest';
 import { inject } from '@loopback/context';
 import { repository } from '@loopback/repository';
 
@@ -41,7 +41,7 @@ export class CommentsController {
     @repository(UserRepository) private userRepository: UserRepository) {}
 
   // Map to `GET /ping`
-  @get('/comments', {
+  @get('/api/v2/comments', {
     responses: {
       '200': PING_RESPONSE,
     },
@@ -56,5 +56,16 @@ export class CommentsController {
       url: this.req.url,
       headers: Object.assign({}, this.req.headers),
     };
+  }
+
+  @post('api/v2/comments', {
+    responses: {
+      '200': PING_RESPONSE,
+    },
+  })
+  async postComment(postObject: IPostObject): Promise<Object> {
+    const {firstName, lastName, email} = postObject;
+    const userData = {firstName, lastName, email};
+    this.userRepository.createInstance(userData);
   }
 }

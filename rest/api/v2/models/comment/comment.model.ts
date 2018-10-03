@@ -5,7 +5,6 @@ import {
   Length,
   DataType,
   ForeignKey,
-  BelongsTo
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
 
@@ -15,7 +14,7 @@ export class Comment extends Model<Comment> {
 
   @ForeignKey(() => User)
   @Column
-  userId: number;
+  userEmail: string;
 
   @Length({min: 50, max: 250})
   @Column({type: DataType.TEXT})
