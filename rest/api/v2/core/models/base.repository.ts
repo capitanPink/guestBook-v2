@@ -12,7 +12,7 @@ export class BaseRepository {
     return this.model.findOne(filter);
   }
 
-  findAll(filter: Filter) {
+  findAll(filter: any) {
     return this.model.findAll(filter);
   }
 

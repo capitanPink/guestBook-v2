@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { GuestFormService } from './../../services/guest-form.service';
+import { GuestBookService } from '../../services/guest-book.service';
 import { IPostObject } from './../../../../shared/interfaces/i-post-object';
-import { ResponseObject } from 'openapi3-ts';
 
 @Component({
   selector: 'app-guest-form',
   templateUrl: './guest-form.component.html',
-  styleUrls: ['./guest-form.component.scss'],
-  providers: [GuestFormService]
+  styleUrls: ['./guest-form.component.scss']
 })
 export class GuestFormComponent {
 
@@ -18,14 +16,13 @@ export class GuestFormComponent {
     commentText: ''
   }
 
-  constructor(private guestFormService: GuestFormService) {}
+  constructor(private guestBookService: GuestBookService) {}
 
   submit(postObject: IPostObject) {
-    console.log(`The post Object ${postObject}`);
-    this.guestFormService.submitComment(postObject)
+    this.guestBookService.submitComment(postObject)
       .subscribe(
         (response: any) => console.log(`Response: ${response}`),
-        (error: ResponseObject) => console.log(`Error was raised: ${error}`)
+        (error: Response) => console.log(`Error was raised: ${error}`)
       );
   }
 }

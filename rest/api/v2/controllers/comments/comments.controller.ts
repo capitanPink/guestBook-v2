@@ -1,14 +1,11 @@
-import { IPostObject } from './../../../../../shared/interfaces/i-post-object';
 import { Request, RestBindings, get, ResponseObject, post, param, requestBody } from '@loopback/rest';
 import { inject } from '@loopback/context';
 import { repository } from '@loopback/repository';
-import { UserRepository } from './../../models/user/user.repository';
-import { User } from './../../models/user/user.model';
+import { UserRepository } from '../../repositories/user.repository';
+import { CommentRepository } from '../../repositories/comment.repository';
+import { IPostObject } from './../../../../../shared/interfaces/i-post-object';
 
-/**
- * OpenAPI response for ping()
- */
-const PING_RESPONSE: ResponseObject = {
+const COMMENT_RESPONSE: ResponseObject = {
   description: 'Ping Response',
   content: {
     'application/json': {
@@ -31,46 +28,35 @@ const PING_RESPONSE: ResponseObject = {
   },
 };
 
-/**
- * A simple controller to bounce back http requests
- */
 export class CommentsController {
-  // @repository(UserRepository)
-  // private repository: UserRepository;
   constructor(
     @inject(RestBindings.Http.REQUEST) private req: Request,
-    @repository(UserRepository) private userRepository: UserRepository) {}
+    @repository(UserRepository) private userRepository: UserRepository,
+    @repository(CommentRepository) private commentRepository: CommentRepository) {}
 
-  // Map to `GET /ping`
-  @get('/api/v2/comments', {
-    responses: {
-      '200': PING_RESPONSE,
-    },
-  })
+  @get('/api/v2/comments')
   async showComments(): Promise<Object> {
-    // Reply with a greeting, the current time, the url, and request headers
     return {
-      comments: [
-        await this.userRepository.all()
-      ],
-      date: new Date(),
-      url: this.req.url,
-      headers: Object.assign({}, this.req.headers),
+      comments: await this.userRepository.allWithComments()
     };
   }
 
   @post('api/v2/comments', {
     responses: {
-      '200': PING_RESPONSE,
+      '200': COMMENT_RESPONSE,
     },
   })
   async postComment(@requestBody() postObject: IPostObject): Promise<Object> {
-    console.log('this is arguments', postObject);
-    // const {firstName, lastName, email} = postObject;
-    // const userData = {firstName, lastName, email};
-    // const isUserCreated = await this.userRepository.findOne({where: {email: email}});
-    // await this.userRepository.createInstance(userData);
-    // await this.
+    const {firstName, lastName, email, commentText} = postObject;
+    const userData = {firstName, lastName, email};
+    const commentData = {userEmail: email, commentText};
+    const isUserCreated = await this.userRepository.findByEmail(email);
+    if (!isUserCreated) {
+      await this.userRepository.createInstance(userData);
+      await this.commentRepository.createInstance(commentData);
+    } else {
+      await this.commentRepository.createInstance(commentData);
+    }
     return {};
   }
 }
