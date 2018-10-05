@@ -1,0 +1,53 @@
+<form (ngSubmit)="submit(postObject)"
+      class="form-group guest-form">
+  <div class="guest-form__first-name">
+      <label for="guest-form__first-name">
+          First name:
+        </label>
+        <input id="guest-form__first-name"
+               [(ngModel)]="postObject.firstName"
+               type="text"
+               class="form-control"
+               placeholder="first name"
+               [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="guest-form__last-name">
+      <label for="guest-form__last-name">
+          Last name:
+        </label>
+        <input id="guest-form__last-name"
+               [(ngModel)]="postObject.lastName"
+               type="text"
+               class="form-control"
+               placeholder="last name"
+               [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="guest-form__email">
+      <label for="guest-form__email">
+        Email:
+      </label>
+      <input id="guest-form__email"
+             [(ngModel)]="postObject.email"
+             type="email"
+             class="form-control"
+             placeholder="email"
+             [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class="guest-form__text">
+    <label for="guest-form__email">
+      Please, leave your comment here:
+    </label>
+    <textarea id="guest-form__email"
+              [(ngModel)]="postObject.commentText"
+              class="form-control"
+              cols="30"
+              rows="10"
+              placeholder="Write your application here"
+              [ngModelOptions]="{standalone: true}">
+    </textarea>
+  </div>
+  <button class="guest-form__submit-button btn btn-primary"
+          type="submit">
+    Submit
+  </button>
+</form>

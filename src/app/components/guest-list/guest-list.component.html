@@ -1,0 +1,21 @@
+<div class="guest-list">
+  <h4 class="guest-list__header">
+    Guest comments list:
+  </h4>
+  <ul class="guest-list__list">
+    <li *ngFor="let comment of comments"
+        class="guest-list__item">
+        <div class="guest-list__item-header">
+          <h5 class="guest-list__item-name">
+            {{ comment.firstName }} {{ comment.lastName }}
+          </h5>
+          <h6 class="guest-list__item-email">
+            {{ comment.email }}
+          </h6>
+        </div>
+        <div class="guest-list__item-body">
+
+        </div>
+    </li>
+  </ul>
+</div>
