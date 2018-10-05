@@ -14,11 +14,11 @@ export class GuestBookService {
   
   constructor(private http: Http) {}
 
-  submitComment(postObject: IPostObject): Observable<Object> {
+  submitComment(postObject: IPostObject): any {
     return this.http.post(`${this.baseUrl}${this.commentsUrl}`, postObject);
   }
 
-  getComments(): Observable<Object> {
+  getComments(): any {
     return this.http.get(`${this.baseUrl}${this.commentsUrl}`);
   }
 }

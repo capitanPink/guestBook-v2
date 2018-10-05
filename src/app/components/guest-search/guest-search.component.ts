@@ -10,12 +10,18 @@ import { ICommentObject } from '../../../../shared/interfaces/i-comment-object';
 })
 export class GuestSearchComponent implements OnInit {
 
-  commentObject: ICommentObject[] = []; 
+  commentObject: ICommentObject[] = [];
+
   constructor(private guestBookService: GuestBookService) {}
 
   ngOnInit() {
+    this.updateCommentsList();
+  }
+
+  updateCommentsList() {
+    console.log('im here');
     this.guestBookService.getComments()
-      .pipe(map((response: any) => response.json().comments))
+      .pipe(map((response: any) => response.json()))
       .subscribe(
         (commentObject: any) => {
           this.commentObject = commentObject;
