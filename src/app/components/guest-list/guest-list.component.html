@@ -6,15 +6,15 @@
     <li *ngFor="let comment of comments"
         class="guest-list__item">
         <div class="guest-list__item-header">
-          <h5 class="guest-list__item-name">
+          <h6 class="guest-list__item-name">
             {{ comment.firstName }} {{ comment.lastName }}
-          </h5>
+          </h6>
           <h6 class="guest-list__item-email">
             {{ comment.email }}
           </h6>
         </div>
         <div class="guest-list__item-body">
-
+          {{ comment.commentText }}
         </div>
     </li>
   </ul>

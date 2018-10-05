@@ -1,9 +1,7 @@
-import { Request, RestBindings, get, ResponseObject, post, param, requestBody } from '@loopback/rest';
+import { Request, RestBindings, get, ResponseObject, post, requestBody } from '@loopback/rest';
 import { inject } from '@loopback/context';
-import { repository } from '@loopback/repository';
-import { UserRepository } from '../../repositories/user.repository';
-import { CommentRepository } from '../../repositories/comment.repository';
 import { IPostObject } from './../../../../../shared/interfaces/i-post-object';
+import { UserCommentService } from './../../services/user-comment.service';
 
 const COMMENT_RESPONSE: ResponseObject = {
   description: 'Ping Response',
@@ -31,14 +29,13 @@ const COMMENT_RESPONSE: ResponseObject = {
 export class CommentsController {
   constructor(
     @inject(RestBindings.Http.REQUEST) private req: Request,
-    @repository(UserRepository) private userRepository: UserRepository,
-    @repository(CommentRepository) private commentRepository: CommentRepository) {}
+    @inject('services.userCommentService') private userCommentService: UserCommentService) {
+      this.userCommentService = userCommentService;
+    }
 
   @get('/api/v2/comments')
   async showComments(): Promise<Object> {
-    return {
-      comments: await this.userRepository.allWithComments()
-    };
+    return await this.userCommentService.getComments();
   }
 
   @post('api/v2/comments', {
@@ -47,16 +44,6 @@ export class CommentsController {
     },
   })
   async postComment(@requestBody() postObject: IPostObject): Promise<Object> {
-    const {firstName, lastName, email, commentText} = postObject;
-    const userData = {firstName, lastName, email};
-    const commentData = {userEmail: email, commentText};
-    const isUserCreated = await this.userRepository.findByEmail(email);
-    if (!isUserCreated) {
-      await this.userRepository.createInstance(userData);
-      await this.commentRepository.createInstance(commentData);
-    } else {
-      await this.commentRepository.createInstance(commentData);
-    }
-    return {};
+    return await this.userCommentService.postComment(postObject);
   }
 }
