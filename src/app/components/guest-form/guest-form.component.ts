@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { GuestBookService } from '../../services/guest-book.service';
+import { Observable } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { IPostObject } from './../../../../shared/interfaces/i-post-object';
-import { forkJoin } from 'rxjs'
-import { flatMap, mergeMap } from 'rxjs/operators';
+import { SearchFormModel } from './../../../../shared/models/search-form-model';
 
 @Component({
   selector: 'app-guest-form',
@@ -11,26 +10,9 @@ import { flatMap, mergeMap } from 'rxjs/operators';
 })
 export class GuestFormComponent {
 
-  @Output() update: EventEmitter<any> = new EventEmitter();
+  @Input() submitComment: (postObject: IPostObject) => Observable<Array<Object>>;
 
-  postObject: IPostObject = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    commentText: ''
-  }
+  postObject: IPostObject = new SearchFormModel();
 
-  constructor(private guestBookService: GuestBookService) {}
-
-  submit(postObject: IPostObject) {
-    this.guestBookService.submitComment(postObject)
-      // .pipe(mergeMap(() => this.guestBookService.getComments()))
-      .subscribe(
-        (response: any) => {
-          console.log(`Response: ${response}`);
-          this.update.emit();
-        },
-        (error: Response) => console.log(`Error was raised: ${error}`)
-      );
-  }
+  constructor() {}
 }

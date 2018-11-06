@@ -1,10 +1,8 @@
-import { ICommentObject } from './../../../shared/interfaces/i-comment-object';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+
 import { IPostObject } from '../../../shared/interfaces/i-post-object';
 import { paths } from '../../../shared/paths/paths.dev';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class GuestBookService {
@@ -18,7 +16,7 @@ export class GuestBookService {
     return this.http.post(`${this.baseUrl}${this.commentsUrl}`, postObject);
   }
 
-  getComments(): any {
-    return this.http.get(`${this.baseUrl}${this.commentsUrl}`);
+  getComments(params: string = ''): any {
+    return this.http.get(`${this.baseUrl}${this.commentsUrl}${params.length ? `?${params}`: ``}`);
   }
 }

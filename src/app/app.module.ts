@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { GuestFormComponent } from './components/guest-form/guest-form.component';
-import { GuestBookService } from './services/guest-book.service';
-import { GuestSearchComponent } from './components/guest-search/guest-search.component';
-import { GuestListComponent } from './components/guest-list/guest-list.component';
+import { GuestModule } from './components/guest.module';
+import { GuestComponent } from './components/guest/guest.component';
+
 
 // const appRoutes: Routes = [
 //   {
@@ -20,20 +17,15 @@ import { GuestListComponent } from './components/guest-list/guest-list.component
 @NgModule({
   imports:[
     BrowserModule,
-    FormsModule,
-    HttpModule
+    GuestModule
     // RouterModule.forRoot(
     //   appRoutes,
     //   { enableTracing: true } // <-- debugging purposes only
     // )
   ],
   declarations: [
-    AppComponent,
-    GuestFormComponent,
-    GuestSearchComponent,
-    GuestListComponent
+    AppComponent
   ],
-  bootstrap: [AppComponent],
-  providers: [GuestBookService]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

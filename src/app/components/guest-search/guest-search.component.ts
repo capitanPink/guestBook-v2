@@ -1,33 +1,19 @@
-import { map } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
-import { GuestBookService } from '../../services/guest-book.service';
-import { ICommentObject } from '../../../../shared/interfaces/i-comment-object';
+import { SearchFormModel } from './../../../../shared/models/search-form-model';
+import { Component, Input } from '@angular/core';
+
+import { ISearchObject } from './../../../../shared/interfaces/i-search-object';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-guest-search',
   templateUrl: './guest-search.component.html',
   styleUrls: ['./guest-search.component.scss']
 })
-export class GuestSearchComponent implements OnInit {
+export class GuestSearchComponent {
 
-  commentObject: ICommentObject[] = [];
+  @Input() getQuery: (searchObject: ISearchObject) => Observable<Array<Object>>;
 
-  constructor(private guestBookService: GuestBookService) {}
+  searchObject: SearchFormModel = new SearchFormModel();
 
-  ngOnInit() {
-    this.updateCommentsList();
-  }
-
-  updateCommentsList() {
-    console.log('im here');
-    this.guestBookService.getComments()
-      .pipe(map((response: any) => response.json()))
-      .subscribe(
-        (commentObject: any) => {
-          this.commentObject = commentObject;
-          console.log('this.commentObject', commentObject);
-        },
-        (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
-      );
-  }
+  constructor() {}
 }

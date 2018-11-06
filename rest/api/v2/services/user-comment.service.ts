@@ -1,16 +1,18 @@
-import { IComment } from './../interfaces/i-comment';
-import { User } from './../models/user/user.model';
 import { repository } from '@loopback/repository';
+
+import { User } from './../models/user/user.model';
 import { CommentRepository } from './../repositories/comment.repository';
 import { UserRepository } from './../repositories/user.repository';
 import { IPostObject } from './../../../../shared/interfaces/i-post-object';
+import { IComment } from './../interfaces/i-comment';
 
 export class UserCommentService {
 
   constructor(@repository(UserRepository) private userRepository: UserRepository,
               @repository(CommentRepository) private commentRepository: CommentRepository) {}
 
-  async getComments() {
+  async getComments(searchObject: any) {
+    console.log('from getComments', searchObject);
     const users = await this.userRepository.all();
     const comments = await this.commentRepository.all();
     const commentsObject = comments.map((comment: IComment) => {
@@ -48,6 +50,3 @@ export class UserCommentService {
   }
 
 }
-
-// @repository(UserRepository) private userRepository: UserRepository,
-// @repository(CommentRepository) private commentRepository: CommentRepository,

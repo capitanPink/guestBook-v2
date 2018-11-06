@@ -4,10 +4,10 @@ import { Sequelize, ISequelizeConfig } from 'sequelize-typescript';
 
 const databaseConfig: ISequelizeConfig = {
   host: 'localhost',
-  port: 5432,
+  port: 5431,
   database: 'guestbook',
-  username: '',
-  password: '',
+  username: 'test',
+  password: "test",
   dialect: 'postgres'
 }
 

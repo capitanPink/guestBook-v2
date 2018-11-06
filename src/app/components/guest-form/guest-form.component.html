@@ -1,4 +1,4 @@
-<form (ngSubmit)="submit(postObject)"
+<form (ngSubmit)="submitComment(postObject)"
       class="form-group guest-form">
   <div class="guest-form__first-name">
       <label for="guest-form__first-name">
@@ -8,8 +8,7 @@
                [(ngModel)]="postObject.firstName"
                type="text"
                class="form-control"
-               placeholder="first name"
-               [ngModelOptions]="{standalone: true}">
+               name="firstName">
   </div>
   <div class="guest-form__last-name">
       <label for="guest-form__last-name">
@@ -19,8 +18,8 @@
                [(ngModel)]="postObject.lastName"
                type="text"
                class="form-control"
-               placeholder="last name"
-               [ngModelOptions]="{standalone: true}">
+               name="lastName"
+               placeholder="last name">
   </div>
   <div class="guest-form__email">
       <label for="guest-form__email">
@@ -30,8 +29,8 @@
              [(ngModel)]="postObject.email"
              type="email"
              class="form-control"
-             placeholder="email"
-             [ngModelOptions]="{standalone: true}">
+             name="email"
+             placeholder="email">
   </div>
   <div class="guest-form__text">
     <label for="guest-form__email">
@@ -42,8 +41,8 @@
               class="form-control"
               cols="30"
               rows="10"
-              placeholder="Write your application here"
-              [ngModelOptions]="{standalone: true}">
+              name="commentText"
+              placeholder="Write your application here">
     </textarea>
   </div>
   <button class="guest-form__submit-button btn btn-primary"
