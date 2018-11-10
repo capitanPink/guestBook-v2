@@ -17,6 +17,6 @@ export class GuestBookService {
   }
 
   getComments(params: string = ''): any {
-    return this.http.get(`${this.baseUrl}${this.commentsUrl}${params.length ? `?${params}`: ``}`);
+    return this.http.get(`${this.baseUrl}${this.commentsUrl}${params}`);
   }
 }

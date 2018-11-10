@@ -1,5 +1,8 @@
+import { IUser } from "./i-user";
+
 export interface IComment {
-  id: number;
-  email: string;
+  id?: number;
   commentText: string;
+  userEmail?: string;
+  user: IUser;
 }

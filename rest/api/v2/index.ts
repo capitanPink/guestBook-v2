@@ -1,16 +1,9 @@
 import { ApplicationConfig } from '@loopback/core';
-import { DataBaseUtil } from './core/utils/database.util';
 import { GuestBookApplication } from './application';
-import { User } from './models/user/user.model';
-import { Comment } from './models/comment/comment.model';
-export * from './config/data-source';
-
-
-
-DataBaseUtil.initializeTables([User, Comment]);
+import { DataBaseService } from './services/database.service';
 
 export async function main(options: ApplicationConfig = {}) {
-  const app = new GuestBookApplication(options);
+  const app = new GuestBookApplication(options, new DataBaseService());
   await app.boot();
   await app.start();
   const url = app.restServer.url;

@@ -10,9 +10,11 @@ import {
   HasMany,
   PrimaryKey
 } from 'sequelize-typescript';
+import { IUser } from '../../interfaces/i-user';
+import { IComment } from '../../interfaces/i-comment';
 
 @Table
-export class User extends Model<User> {
+export class User extends Model<User> implements IUser {
 
   @Length({min: 3})
   @Column({type: DataType.TEXT})
@@ -29,5 +31,5 @@ export class User extends Model<User> {
   email: string;
 
   @HasMany(() => Comment)
-  comments: Comment[]
+  comments: IComment[]
 }

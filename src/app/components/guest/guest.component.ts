@@ -34,7 +34,9 @@ export class GuestComponent {
     this.guestBookService.getComments(query)
       .pipe(map((response: Response) => response.json()))
       .subscribe(
-        (commentList: ICommentObject[]) => this.commentList = commentList,
+        (commentList: ICommentObject[]) => {
+          this.commentList = commentList;
+        console.log('this.commentsList', commentList);},
         (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
       );
   }
