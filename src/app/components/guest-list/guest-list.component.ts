@@ -1,7 +1,9 @@
-import { GuestBookService } from './../../services/guest-book.service';
-import { ICommentObject } from './../../../../shared/interfaces/i-comment-object';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+
+import { ReversePipe } from './../../shared/pipes/reverse-array.pipe';
+import { GuestBookService } from './../../services/guest-book.service';
+import { ICommentObject } from './../../../../shared/interfaces/i-comment-object';
 import { IPostObject } from '../../../../shared/interfaces/i-post-object';
 
 @Component({
@@ -14,13 +16,14 @@ export class GuestListComponent implements OnInit, OnDestroy {
   private comments: ICommentObject[] = [];
 
   private _subscriptions: Subscription[] = [];
-  constructor(private guestBookService: GuestBookService) {}
+  constructor(private guestBookService: GuestBookService,
+              private _reversePipe: ReversePipe) {}
 
   ngOnInit() {
     const commentsSubscription =
                 this.guestBookService
                     .subscribeToComments()
-                    .subscribe((comments: ICommentObject[]) => this.setComments(comments));
+                    .subscribe((comments: ICommentObject[]) => this.setComments(this._reversePipe.transform(comments)));
     const postSubscription =
                 this.guestBookService
                     .subscribeToSubmit()

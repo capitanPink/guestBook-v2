@@ -3,7 +3,7 @@
     Guest comments list:
   </h4>
   <ul class="guest-list__list">
-    <li *ngFor="let comment of comments"
+    <li *ngFor="let comment of (comments | reverse)"
         class="guest-list__item">
         <div class="guest-list__item-header">
           <h6 class="guest-list__item-name">

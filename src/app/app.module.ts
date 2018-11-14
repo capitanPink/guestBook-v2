@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { GuestModule } from './components/guest.module';
 import { GuestComponent } from './components/guest/guest.component';
-
+import { ReversePipe } from './shared/pipes/reverse-array.pipe';
 
 // const appRoutes: Routes = [
 //   {
@@ -24,7 +25,8 @@ import { GuestComponent } from './components/guest/guest.component';
     // )
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    ReversePipe
   ],
   bootstrap: [AppComponent]
 })
