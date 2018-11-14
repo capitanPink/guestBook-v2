@@ -8,8 +8,6 @@ import { MySequence } from './sequence';
 import { UserRepository } from './repositories/user.repository';
 import { CommentRepository } from './repositories/comment.repository';
 import { UserCommentService } from './services/user-comment.service';
-import { User } from './models/user/user.model';
-import { Comment } from './models/comment/comment.model';
 import { DataBaseService } from './services/database.service';
 
 export class GuestBookApplication extends BootMixin(
@@ -22,8 +20,6 @@ export class GuestBookApplication extends BootMixin(
     this.repository(CommentRepository);
     this.bind('services.userCommentService').toClass(UserCommentService);
     this.bind('services.dataBaseService').toClass(DataBaseService);
-    this.bind('models.comment').toClass(Comment);
-    this.bind('models.user').toClass(User);
     this.sequence(MySequence);
 
     this.projectRoot = __dirname;

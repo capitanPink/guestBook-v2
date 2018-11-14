@@ -17,7 +17,6 @@ export class GuestComponent {
 
   firstName: String;
   searchObject: SearchObjectModel = new SearchObjectModel();
-  commentList: ICommentObject[] = [];
 
   constructor(private guestBookService: GuestBookService) {}
 
@@ -35,7 +34,8 @@ export class GuestComponent {
       .pipe(map((response: Response) => response.json()))
       .subscribe(
         (commentList: ICommentObject[]) => {
-          this.commentList = commentList;
+          this.guestBookService.commentsList = commentList;
+          // this.commentList = commentList;
         console.log('this.commentsList', commentList);},
         (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
       );

@@ -1,14 +1,10 @@
 import { repository } from '@loopback/repository';
-import { inject } from '@loopback/core';
 
 import { CommentRepository } from './../repositories/comment.repository';
 import { UserRepository } from './../repositories/user.repository';
 import { User } from '../models/user/user.model';
 import { Comment } from './../models/comment/comment.model';
 import { IPostObject } from './../../../../shared/interfaces/i-post-object';
-import { IComment } from '../interfaces/i-comment';
-
-import { ICommentObject } from '../../../../shared/interfaces/i-comment-object';
 
 
 export class UserCommentService {
