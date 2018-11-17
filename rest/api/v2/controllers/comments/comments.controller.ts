@@ -35,13 +35,16 @@ export class CommentsController {
     }
 
   @get('api/v2/comments')
-  showComments(
+  async showComments(
     @param.query.string('firstName') firstName: string,
     @param.query.number('commentPerPage') commentPerPage: number,
     @param.query.string('email') email: string,
+    @param.query.number('offset') offset: number
   ) {
-    console.log('this.database', this.dataBaseService.models);
-    return this.userCommentService.getComments({firstName, email, commentPerPage});
+    if (firstName || commentPerPage || email) {
+      return await this.userCommentService.getFilteredComments({firstName, email, commentPerPage});
+    }
+    return await this.userCommentService.getAllComments();
   }
 
   @post('api/v2/comments', {

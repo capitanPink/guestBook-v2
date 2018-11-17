@@ -8,7 +8,9 @@ import {
   DataType,
   Unique,
   HasMany,
-  PrimaryKey
+  PrimaryKey,
+  BelongsTo,
+  ForeignKey
 } from 'sequelize-typescript';
 import { IUser } from '../../interfaces/i-user';
 import { IComment } from '../../interfaces/i-comment';
@@ -31,5 +33,5 @@ export class User extends Model<User> implements IUser {
   email: string;
 
   @HasMany(() => Comment)
-  comments: IComment[]
+  comments: IComment[];
 }

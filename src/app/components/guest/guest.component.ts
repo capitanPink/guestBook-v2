@@ -29,14 +29,11 @@ export class GuestComponent {
   }
 
   get(searchObject: ISearchObject) {
-    const query = FormatterUtil.objectToParams(searchObject);
-    this.guestBookService.getComments(query)
-      .pipe(map((response: Response) => response.json()))
-      .subscribe(
-        (commentList: ICommentObject[]) => {
+    const params = FormatterUtil.objectToParams(searchObject);
+    this.guestBookService.getComments(params)
+      .subscribe((commentList: any) => {
           this.guestBookService.commentsList = commentList;
-          // this.commentList = commentList;
-        console.log('this.commentsList', commentList);},
+      },
         (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
       );
   }

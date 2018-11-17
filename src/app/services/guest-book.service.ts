@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { IPostObject } from '../../../shared/interfaces/i-post-object';
 import { paths } from '../../../shared/paths/paths.dev';
@@ -16,7 +17,10 @@ export class GuestBookService {
   private _commentsObject: BehaviorSubject<ICommentObject[]> = new BehaviorSubject<ICommentObject[]>([]);
   private _submitObject: BehaviorSubject<IPostObject> = new BehaviorSubject<any>(null);
   
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+    this.getComments()
+        .subscribe((response: ICommentObject[]) => this.commentsList = response);
+  }
 
   submitComment(postObject: IPostObject): any {
     this._submitObject.next(postObject);
@@ -24,7 +28,8 @@ export class GuestBookService {
   }
 
   getComments(params: string = ''): Observable<any> {
-    return this.http.get(`${this._baseUrl}${this._commentsUrl}${params}`);
+    return this.http.get(`${this._baseUrl}${this._commentsUrl}${params === `?` ? `` : params}`)
+                    .pipe(map((response: any) => response.json()));
   }
 
   subscribeToComments() {
@@ -33,6 +38,10 @@ export class GuestBookService {
 
   subscribeToSubmit(): Observable<IPostObject> {
     return this._submitObject.asObservable();
+  }
+
+  get commentList() {
+    return this._commentsList;
   }
 
   set commentsList(commentList: ICommentObject[]) {

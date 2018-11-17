@@ -16,27 +16,31 @@ export class GuestListComponent implements OnInit, OnDestroy {
   private comments: ICommentObject[] = [];
 
   private _subscriptions: Subscription[] = [];
-  constructor(private guestBookService: GuestBookService,
-              private _reversePipe: ReversePipe) {}
+  constructor(private _guestBookService: GuestBookService) {}
 
   ngOnInit() {
     const commentsSubscription =
-                this.guestBookService
+                this._guestBookService
                     .subscribeToComments()
-                    .subscribe((comments: ICommentObject[]) => this.setComments(this._reversePipe.transform(comments)));
+                    .subscribe((comments: ICommentObject[]) => this.setComments(comments));
     const postSubscription =
-                this.guestBookService
+                this._guestBookService
                     .subscribeToSubmit()
                     .subscribe((postObject: IPostObject) => this.addComment(postObject));
     this._subscriptions.push(commentsSubscription, postSubscription);
   }
 
   setComments(comments: ICommentObject[]) {
-    this.comments = [...comments];
+    console.log('comments',comments);
+    if (comments) {
+      this.comments = [...comments];
+    }
   }
 
   addComment(comment: IPostObject): void {
-    this.comments = [comment].concat(this.comments);
+    if (comment) {
+      this.comments = [comment].concat(this.comments);
+    }
   }
 
   ngOnDestroy() {
