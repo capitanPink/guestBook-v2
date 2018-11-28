@@ -5,4 +5,5 @@ export class IUser {
   lastName: string;
   email: string;
   comments: IComment[];
+  
 };

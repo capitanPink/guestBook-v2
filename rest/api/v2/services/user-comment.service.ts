@@ -1,14 +1,12 @@
 import { repository } from '@loopback/repository';
+import { inject } from '@loopback/core';
 
 import { CommentRepository } from './../repositories/comment.repository';
 import { UserRepository } from './../repositories/user.repository';
 import { User } from '../models/user/user.model';
 import { Comment } from './../models/comment/comment.model';
 import { IPostObject } from './../../../../shared/interfaces/i-post-object';
-import { ICommentObject } from './../../../../shared/interfaces/i-comment-object';
-import { IUser } from '../interfaces/i-user';
-import { IComment } from '../interfaces/i-comment';
-
+import { DataBaseService } from './database.service';
 
 export class UserCommentService {
 
@@ -16,31 +14,53 @@ export class UserCommentService {
               @repository(CommentRepository) private commentRepository: CommentRepository) {}
 
   async getFilteredComments(searchObject: any) {
-    const { firstName, email, commentPerPage } = searchObject;
+    const { firstName, email, commentPerPage = 10, offset } = searchObject;
     const where = email && firstName ? { email, firstName }
                     : firstName ? { firstName }
                     :  email ? { email } : {};
-    const include = firstName || email ? [Comment] : [];
+    const include = firstName || email
+      ? { include: { 
+        model: [Comment],
+        where: {
+            offset: offset ? offset : 0,
+            limit: commentPerPage ? commentPerPage : 1000
+          }
+        }
+      }: [];
 
     const filter = {
       where,
       include,
-      limit: commentPerPage
+      limit: commentPerPage,
+      raw: true,
+      offset: offset ? offset : 0
     };
-    const users = await this.userRepository.findAll(filter);
-    return this.formCommentsListObject(users);
+    
+    return await this.userRepository
+            .findAll(filter)
+            .reduce((acc: any, next: any) => acc.concat([{
+              id: next['comments.id'],
+              firstName: next.firstName,
+              lastName: next.lastName,
+              email: next.email,
+              commentText: next['comments.commentText']
+            }]), []);
   }
 
   async getAllComments(options: { limit: number, offset?: number } | any = { limit: 10} ) {
     const filter = Object.keys(options)
                          .reduce((acc, next) => 
                            Object.assign(acc, { [next]: options[next] }), { include: [User] });
-    return (await this.commentRepository.findAll(filter))
-                                        .map((item: any): ICommentObject => {                                          
-                                          const commentObject = Object.assign({}, item, item.user);
-                                          // delete commentObject.user;
-                                          return commentObject;
-                                        });
+    
+    return await this.commentRepository
+            .findAll({...filter, raw: true })
+            .reduce((acc: any, next: any) => acc.concat([{
+                id: next.id,
+                firstName: next['user.firstName'],
+                lastName: next['user.lastName'],
+                email: next.userEmail,
+                commentText: next.commentText
+              }]), []);
   }
 
   async postComment(postObject: IPostObject) {
@@ -49,28 +69,16 @@ export class UserCommentService {
     const commentData = { userEmail: email, commentText };
     const isUserCreated = await this.userRepository.findByEmail(email);
     if (!isUserCreated) {
-      await this.userRepository.createInstance(userData);
-      await this.commentRepository.createInstance(commentData);
+      try {
+        await this.userRepository.createInstance(userData);
+        await this.commentRepository.createInstance(commentData);
+      } catch(e) {
+        console.log(`Error is raised: ${e.message}`)
+      }
     } else {
       await this.commentRepository.createInstance(commentData);
     }
     return {};
   }
 
-  private formCommentsListObject(users: IUser[]) {
-    return users
-            .map((user) => user.comments
-            .map((comment: IComment) => this.formCommentObject(user, comment)))
-            .reduce((acc, next) => acc.concat(next), []);
-  }
-
-  private formCommentObject(user: IUser, comment: IComment) {
-    return {
-      id: comment.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      commentText: comment.commentText
-    };
-  }
 }

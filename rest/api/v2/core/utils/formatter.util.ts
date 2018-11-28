@@ -7,6 +7,6 @@ export class FormatterUtil {
               `${acc}${object[next]
                 ? `${acc === `?` ? ``
                 : `&`}${next}=${object[next]}` : ``}`
-                ,``);
+                ,`?`);
   }
 }

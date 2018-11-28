@@ -29,9 +29,7 @@ const COMMENT_RESPONSE: ResponseObject = {
 export class CommentsController {
   constructor(
     @inject(RestBindings.Http.REQUEST) private req: Request,
-    @inject('services.userCommentService') private userCommentService: UserCommentService,
-    @inject('services.dataBaseService') private dataBaseService: DataBaseService) {
-      this.userCommentService = userCommentService;
+    @inject('services.userCommentService') private userCommentService: UserCommentService) {
     }
 
   @get('api/v2/comments')
