@@ -1,0 +1,43 @@
+<div class="guest-search">
+  <app-guest-list [comments]="commentObject">
+  </app-guest-list>
+  <form (ngSubmit)="getQuery()"
+        class="form-group guest-search__form">
+    <div class="guest-search__first-name">
+      <label for="guest-search__first-name">
+        First name:
+      </label>
+      <input type="text"
+            class="form-control"
+            id="guest-search__first-name">
+    </div>
+    <div class="guest-search__last-name">
+      <label for="guest-search__last-name">
+        Last name:
+      </label>
+      <input type="text"
+            class="form-control"
+            id="guest-search__last-name">
+    </div>
+    <div class="guest-search__email">
+      <label for="guest-search__email">
+        Email:
+      </label>
+      <input type="text"
+            class="form-control"
+            id="guest-search__email">
+    </div>
+    <div class="guest-search__pagination">
+      <label for="guest-search__pagination">
+        Comments per page:
+      </label>
+      <input type="text"
+            class="form-control"
+            id="guest-search__pagination">
+    </div>
+    <button type="submit"
+            class="guest-search__submit btn btn-primary">
+      Search
+    </button>
+  </form>
+</div> 

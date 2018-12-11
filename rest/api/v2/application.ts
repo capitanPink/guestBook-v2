@@ -1,34 +1,31 @@
-import { UserRepository } from './models/user/user.repository';
+import { CommentsController } from './controllers/comments/comments.controller';
 import { BootMixin } from '@loopback/boot';
+import { Context, inject } from '@loopback/context';
 import { ApplicationConfig } from '@loopback/core';
 import { RepositoryMixin } from '@loopback/repository';
 import { RestApplication } from '@loopback/rest';
 import { ServiceMixin } from '@loopback/service-proxy';
 import { MySequence } from './sequence';
-import { PingController } from './controllers';
-import { CommentsController } from './controllers/comments/comments.controller';
+import { UserRepository } from './repositories/user.repository';
+import { CommentRepository } from './repositories/comment.repository';
+import { UserCommentService } from './services/user-comment.service';
 
 export class GuestBookApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
 ) {
-  constructor(options: ApplicationConfig = {rest: {
-    port: 8080
-  }}) {
+  constructor(options: ApplicationConfig = {}) {
     super(options);
-    // this.controller(PingController);
-    this.controller(CommentsController);
     this.repository(UserRepository);
-    // this.bind('repositories.UserRepository').toClass(CommentsController);
-    // Set up the custom sequence
+    this.repository(CommentRepository);
+    this.bind('services.userCommentService').toClass(UserCommentService);
     this.sequence(MySequence);
 
     this.projectRoot = __dirname;
-    // Customize @loopback/boot Booter Conventions here
+
     this.bootOptions = {
       controllers: {
-        // Customize ControllerBooter Conventions here
-        dirs: ['controllers/**'],
-        extensions: ['.ts'],
+        dirs: ['controllers'],
+        extensions: ['.controller.ts'],
         nested: true,
       },
     };

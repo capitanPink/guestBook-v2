@@ -1,0 +1,28 @@
+app-guest-list {
+  flex: 2;
+  padding: 2rem;
+
+  .guest-list {
+
+    &__header {
+      text-align: center;
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    &__item {
+      display: flex;
+      flex-direction: column;
+  
+      &-header {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+

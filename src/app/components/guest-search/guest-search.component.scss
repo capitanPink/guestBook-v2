@@ -1,0 +1,13 @@
+app-guest-search {
+  flex: 3;
+
+  .guest-search {
+    display: flex;
+    justify-content: space-between;
+    
+    &__form {
+      flex: 1;
+    }
+  }
+}
+

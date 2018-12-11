@@ -1,3 +1,4 @@
+import { Comment } from './../comment/comment.model';
 import {
   Table,
   Column,
@@ -6,6 +7,8 @@ import {
   IsEmail,
   DataType,
   Unique,
+  HasMany,
+  PrimaryKey
 } from 'sequelize-typescript';
 
 @Table
@@ -21,6 +24,10 @@ export class User extends Model<User> {
 
   @Unique
   @IsEmail
+  @PrimaryKey
   @Column({type: DataType.TEXT})
   email: string;
+
+  @HasMany(() => Comment)
+  comments: Comment[]
 }

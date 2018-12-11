@@ -1,13 +1,9 @@
-import { UserRepository } from './../../models/user/user.repository';
-import { User } from './../../models/user/user.model';
-import { Request, RestBindings, get, ResponseObject } from '@loopback/rest';
+import { Request, RestBindings, get, ResponseObject, post, requestBody } from '@loopback/rest';
 import { inject } from '@loopback/context';
-import { repository } from '@loopback/repository';
+import { IPostObject } from './../../../../../shared/interfaces/i-post-object';
+import { UserCommentService } from './../../services/user-comment.service';
 
-/**
- * OpenAPI response for ping()
- */
-const PING_RESPONSE: ResponseObject = {
+const COMMENT_RESPONSE: ResponseObject = {
   description: 'Ping Response',
   content: {
     'application/json': {
@@ -30,31 +26,24 @@ const PING_RESPONSE: ResponseObject = {
   },
 };
 
-/**
- * A simple controller to bounce back http requests
- */
 export class CommentsController {
-  // @repository(UserRepository)
-  // private repository: UserRepository;
   constructor(
     @inject(RestBindings.Http.REQUEST) private req: Request,
-    @repository(UserRepository) private userRepository: UserRepository) {}
+    @inject('services.userCommentService') private userCommentService: UserCommentService) {
+      this.userCommentService = userCommentService;
+    }
 
-  // Map to `GET /ping`
-  @get('/comments', {
+  @get('/api/v2/comments')
+  async showComments(): Promise<Object> {
+    return await this.userCommentService.getComments();
+  }
+
+  @post('api/v2/comments', {
     responses: {
-      '200': PING_RESPONSE,
+      '200': COMMENT_RESPONSE,
     },
   })
-  async showComments(): Promise<Object> {
-    // Reply with a greeting, the current time, the url, and request headers
-    return {
-      comments: [
-        await this.userRepository.all()
-      ],
-      date: new Date(),
-      url: this.req.url,
-      headers: Object.assign({}, this.req.headers),
-    };
+  async postComment(@requestBody() postObject: IPostObject): Promise<Object> {
+    return await this.userCommentService.postComment(postObject);
   }
 }

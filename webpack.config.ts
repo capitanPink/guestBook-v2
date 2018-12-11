@@ -1,6 +1,9 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+const devMode = process.env.NODE_ENV !== 'production'
 
 const config: webpack.Configuration = {
   mode: 'development',
@@ -19,7 +22,7 @@ const config: webpack.Configuration = {
         loaders: [{
           loader: 'awesome-typescript-loader',
           options: {
-            transpileOnly: process.env.NODE_ENV !== 'production'
+            transpileOnly: devMode
           }
         },
         'angular2-template-loader',
@@ -42,8 +45,13 @@ const config: webpack.Configuration = {
       loader: 'file-loader?name=assets/[name].[hash].[ext]'
     },
     {
-      test: /\.scss$/,      
-      loaders: ['style-loader', 'css-loader', 'sass-loader']
+      test: /\.(sa|sc|c)ss$/,
+      use: [
+        devMode ? 'to-string-loader' : MiniCssExtractPlugin.loader,
+        'style-loader',
+        'css-loader',
+        'sass-loader',
+      ],
     }
   ]
 },
@@ -56,6 +64,10 @@ plugins: [
     /angular(\\|\/)core(\\|\/)/,
     path.resolve(__dirname, './src')
   ),
+  new MiniCssExtractPlugin({
+    filename: devMode ? '[name].css' : '[name].[hash].css',
+    chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+  }),
   new HtmlWebpackPlugin({
     template: path.join(__dirname, '/src/index.html'),
     excludeChunks: ['app'],
