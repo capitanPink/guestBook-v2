@@ -31,9 +31,7 @@ export class GuestComponent {
   get(searchObject: ISearchObject) {
     const params = FormatterUtil.objectToParams(searchObject);
     this.guestBookService.getComments(params)
-      .subscribe((commentList: any) => {
-          this.guestBookService.commentsList = commentList;
-      },
+      .subscribe((commentList: any) => this.guestBookService.commentsList = commentList,
         (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
       );
   }

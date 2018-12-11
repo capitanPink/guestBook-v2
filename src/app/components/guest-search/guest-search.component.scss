@@ -4,6 +4,17 @@ app-guest-search {
   .guest-search {
     display: flex;
     justify-content: space-between;
+
+    &__buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .button {
+        margin: 5px;
+        padding: 5px 25px;
+      }
+    }
     
     &__form {
       flex: 1;

@@ -48,4 +48,10 @@
       Search
     </button>
   </form>
-</div> 
+</div>
+<div class="guest-search__buttons">
+  <button (click)="previousComments(searchObject.commentPerPage)"
+          class="button button__prev">previous</button>
+  <button (click)="nextComments(searchObject.commentPerPage)"
+          class="button button__next">next</button>
+</div>

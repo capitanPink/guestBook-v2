@@ -22,7 +22,7 @@ export class GuestListComponent implements OnInit, OnDestroy {
     const commentsSubscription =
                 this._guestBookService
                     .subscribeToComments()
-                    .subscribe((comments: ICommentObject[]) => this.setComments(comments));
+                    .subscribe((response: any) => this.setComments(response.comments));
     const postSubscription =
                 this._guestBookService
                     .subscribeToSubmit()
@@ -31,7 +31,6 @@ export class GuestListComponent implements OnInit, OnDestroy {
   }
 
   setComments(comments: ICommentObject[]) {
-    console.log('comments',comments);
     if (comments) {
       this.comments = [...comments];
     }

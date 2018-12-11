@@ -6,7 +6,6 @@ import { UserRepository } from './../repositories/user.repository';
 import { User } from '../models/user/user.model';
 import { Comment } from './../models/comment/comment.model';
 import { IPostObject } from './../../../../shared/interfaces/i-post-object';
-import { DataBaseService } from './database.service';
 
 export class UserCommentService {
 
@@ -18,19 +17,10 @@ export class UserCommentService {
     const where = email && firstName ? { email, firstName }
                     : firstName ? { firstName }
                     :  email ? { email } : {};
-    const include = firstName || email
-      ? { include: { 
-        model: [Comment],
-        where: {
-            offset: offset ? offset : 0,
-            limit: commentPerPage ? commentPerPage : 1000
-          }
-        }
-      }: [];
 
     const filter = {
       where,
-      include,
+      include: [Comment],
       limit: commentPerPage,
       raw: true,
       offset: offset ? offset : 0

@@ -39,10 +39,14 @@ export class CommentsController {
     @param.query.string('email') email: string,
     @param.query.number('offset') offset: number
   ) {
-    if (firstName || commentPerPage || email) {
-      return await this.userCommentService.getFilteredComments({firstName, email, commentPerPage});
-    }
-    return await this.userCommentService.getAllComments();
+    console.log('THIS IS COMMENTS PER PAGE', commentPerPage);
+    return {
+      commentPerPage: commentPerPage,
+      offset: offset,
+      comments: (firstName || email)
+      ? await this.userCommentService.getFilteredComments({ firstName, email, commentPerPage })
+        : await this.userCommentService.getAllComments({ limit: commentPerPage, offset })
+    };
   }
 
   @post('api/v2/comments', {
