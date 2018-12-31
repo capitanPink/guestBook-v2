@@ -1,0 +1,5 @@
+<div class="guest-book">
+  <app-guest-form [submitComment]="submit.bind(this)"></app-guest-form>
+  <app-guest-list></app-guest-list>
+  <app-guest-search [getQuery]="get.bind(this)"></app-guest-search>
+</div>

@@ -1,32 +1,41 @@
-import { map } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { SearchFormModel } from './../../../../shared/models/search-form-model';
+import { Component, Input } from '@angular/core';
+
+import { ISearchObject } from './../../../../shared/interfaces/i-search-object';
+import { Observable } from 'rxjs';
 import { GuestBookService } from '../../services/guest-book.service';
-import { ICommentObject } from '../../../../shared/interfaces/i-comment-object';
+import { FormatterUtil } from '../../../../rest/api/v2/core/utils/formatter.util';
 
 @Component({
   selector: 'app-guest-search',
   templateUrl: './guest-search.component.html',
   styleUrls: ['./guest-search.component.scss']
 })
-export class GuestSearchComponent implements OnInit {
+export class GuestSearchComponent {
 
-  commentObject: ICommentObject[] = [];
+  @Input() getQuery: (searchObject: ISearchObject) => Observable<Array<Object>>;
 
-  constructor(private guestBookService: GuestBookService) {}
+  searchObject: SearchFormModel = new SearchFormModel();
+  _offset: number = 0;
 
-  ngOnInit() {
-    this.updateCommentsList();
+  constructor(private _guestBookService: GuestBookService) {}
+
+  previousComments(commentsPerPage: number) {
+    this._offset -= commentsPerPage;
+    const params = FormatterUtil.objectToParams({ commentsPerPage, offset: this._offset });
+    this._guestBookService.getComments(params)
+      .subscribe(
+        (commentList: any) => this._guestBookService.commentsList = commentList,
+        (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
+      );
   }
 
-  updateCommentsList() {
-    console.log('im here');
-    this.guestBookService.getComments()
-      .pipe(map((response: any) => response.json()))
+  nextComments(commentsPerPage: number) {
+    this._offset += commentsPerPage;
+    const params = FormatterUtil.objectToParams({ commentsPerPage, offset: this._offset });
+    this._guestBookService.getComments(params)
       .subscribe(
-        (commentObject: any) => {
-          this.commentObject = commentObject;
-          console.log('this.commentObject', commentObject);
-        },
+        (commentList: any) => this._guestBookService.commentsList = commentList,
         (error: Response) => console.log(`Error was raised during GET COMMENTS request ${error}`)
       );
   }

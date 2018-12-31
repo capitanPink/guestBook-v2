@@ -1,6 +1,8 @@
+import { IComment } from './../interfaces/i-comment';
 import { Comment } from './../models/comment/comment.model';
 import { User } from '../models/user/user.model';
 import { BaseRepository } from '../core/models/base.repository';
+import { Model } from 'sequelize-typescript';
 
 export class UserRepository extends BaseRepository {
   
@@ -13,6 +15,10 @@ export class UserRepository extends BaseRepository {
   }
 
   allWithComments() {
-    return this.findAll({include: [Comment]});
+    return this.findAll({include: undefined});
+  }
+
+  testMethod() {
+    return this;
   }
 }

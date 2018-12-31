@@ -1,4 +1,4 @@
-import { Filter } from 'loopback-datasource-juggler';
+import { IFindOptions, Model } from "sequelize-typescript";
 
 export class BaseRepository {
 
@@ -8,19 +8,19 @@ export class BaseRepository {
     return this.model.all();
   }
 
-  findOne(filter: Filter) {
-    return this.model.findOne(filter);
+  findOne(include: any) {
+    return this.model.findOne(include);
   }
 
-  findAll(filter: any) {
+  findAll(filter: IFindOptions<any>) {
     return this.model.findAll(filter);
   }
 
-  findAndCountAll(filter: Filter) {
+  findAndCountAll(filter: IFindOptions<any>) {
     return this.model.findAndCountAll(filter);
   }
 
-  destroy(filter: Filter) {
+  destroy(filter: IFindOptions<any>) {
     return this.model.destroy(filter);
   }
 
